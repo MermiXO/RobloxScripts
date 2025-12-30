@@ -1,1 +1,1 @@
-loadstring(game:HttpGet("TEST"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/MermiXO/RobloxScripts/refs/heads/main/Boxing%20Slayer/Boxing%20Slayer%20SRC%20(OLD%20REUPLOADED)?token=GHSAT0AAAAAADR7X5PMWGZSPMYFN22CN2ZG2KTHIYQ"))()
