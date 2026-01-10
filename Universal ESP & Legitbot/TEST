@@ -1,0 +1,478 @@
+local TABLE_TableIndirection = {};
+if getgenv()['UniversalScript_Cleanup'] then
+	getgenv().UniversalScript_Cleanup();
+end
+TABLE_TableIndirection["Connections%0"] = {};
+TABLE_TableIndirection["Services%0"] = {Players=game:GetService("Players"),RunService=game:GetService("RunService"),UserInputService=game:GetService("UserInputService"),Workspace=game:GetService("Workspace"),Camera=game:GetService("Workspace")['CurrentCamera']};
+TABLE_TableIndirection["LocalPlayer%0"] = TABLE_TableIndirection["Services%0"]['Players']['LocalPlayer'];
+TABLE_TableIndirection["Mouse%0"] = TABLE_TableIndirection["LocalPlayer%0"]:GetMouse();
+TABLE_TableIndirection["PlaceId%0"] = game['PlaceId'];
+TABLE_TableIndirection["GameConfigs%0"] = {Arsenal={286090429},EasternWar={(16723330378 - -17454021)},Flick={(136802571193532 - 690627695)},OneShot={105241313130846},Strucid={2377868063},UnnamedShooter={14202073004,(17887392096 - (993 + 357)),(17887393147 - (857 + 74))}};
+local function GetGameMode()
+	for GameName, Ids in pairs(TABLE_TableIndirection["GameConfigs%0"]) do
+		if table.find(Ids, TABLE_TableIndirection["PlaceId%0"]) then
+			return GameName;
+		end
+	end
+	return "Universal";
+end
+TABLE_TableIndirection["CurrentGame%0"] = GetGameMode();
+print("Loaded Config for: " .. TABLE_TableIndirection["CurrentGame%0"]);
+TABLE_TableIndirection["Settings%0"] = {Aimbot={Enabled=false,Keybind=Enum['UserInputType']['MouseButton2'],Smoothing=5,FOV=(668 - (367 + 201)),ShowFOV=true,TeamCheck=true,WallCheck=true,TargetPart="Head"},ESP={Enabled=false,Boxes=false,Names=false,Health=false,Skeleton=false,HeadDot=false,TeamCheck=true,MaxDistance=1500,TextColor=Color3.fromRGB(1182 - (214 + 713), 255, 64 + 191),BoxColor=Color3.fromRGB(41 + 214, 877 - (282 + 595), 1637 - (1523 + 114)),SkeletonColor=Color3.fromRGB(230 + 25, 363 - 108, 1320 - (68 + 997))}};
+TABLE_TableIndirection["FOVCircle%0"] = Drawing.new("Circle");
+TABLE_TableIndirection["FOVCircle%0"]['Color'] = Color3.fromRGB(1525 - (226 + 1044), 1110 - 855, 372 - (32 + 85));
+TABLE_TableIndirection["FOVCircle%0"]['Thickness'] = 1 + 0;
+TABLE_TableIndirection["FOVCircle%0"]['NumSides'] = 60;
+TABLE_TableIndirection["FOVCircle%0"]['Filled'] = false;
+TABLE_TableIndirection["FOVCircle%0"]['Transparency'] = 1;
+TABLE_TableIndirection["Visuals%0"] = {};
+TABLE_TableIndirection["ImGui%0"] = loadstring(game:HttpGet("https://github.com/depthso/Roblox-ImGUI/raw/main/ImGui.lua"))();
+TABLE_TableIndirection["Window%0"] = TABLE_TableIndirection["ImGui%0"]:CreateWindow({Title="Universal Legitbot & ESP",Size=UDim2.new(0, 78 + 272, 957 - (892 + 65), 400),Position=UDim2.new(0.5 - 0, 0, 0, 70)});
+TABLE_TableIndirection["Window%0"]:Center();
+TABLE_TableIndirection["CombatTab%0"] = TABLE_TableIndirection["Window%0"]:CreateTab({Name="Legitbot"});
+TABLE_TableIndirection["VisualsTab%0"] = TABLE_TableIndirection["Window%0"]:CreateTab({Name="Visuals"});
+TABLE_TableIndirection["Window%0"]:ShowTab(TABLE_TableIndirection["CombatTab%0"]);
+TABLE_TableIndirection["CombatTab%0"]:Checkbox({Label="Aimbot Enabled",Value=TABLE_TableIndirection["Settings%0"]['Aimbot']['Enabled'],Callback=function(self, Value)
+	TABLE_TableIndirection["Settings%0"]['Aimbot']['Enabled'] = Value;
+end});
+TABLE_TableIndirection["CombatTab%0"]:Keybind({Label="Aim Key",Value=TABLE_TableIndirection["Settings%0"]['Aimbot']['Keybind'],Callback=function(self, KeyCode)
+	TABLE_TableIndirection["Settings%0"]['Aimbot']['Keybind'] = KeyCode;
+end});
+TABLE_TableIndirection["CombatTab%0"]:Slider({Label="Smoothing",Value=TABLE_TableIndirection["Settings%0"]['Aimbot']['Smoothing'],MinValue=(1 - 0),MaxValue=20,Callback=function(self, Value)
+	TABLE_TableIndirection["Settings%0"]['Aimbot']['Smoothing'] = Value;
+end});
+TABLE_TableIndirection["CombatTab%0"]:Slider({Label="FOV Radius",Value=TABLE_TableIndirection["Settings%0"]['Aimbot']['FOV'],MinValue=(18 - 8),MaxValue=500,Callback=function(self, Value)
+	TABLE_TableIndirection["Settings%0"]['Aimbot']['FOV'] = Value;
+end});
+TABLE_TableIndirection["CombatTab%0"]:Checkbox({Label="Draw FOV",Value=TABLE_TableIndirection["Settings%0"]['Aimbot']['ShowFOV'],Callback=function(self, Value)
+	TABLE_TableIndirection["Settings%0"]['Aimbot']['ShowFOV'] = Value;
+end});
+if ((TABLE_TableIndirection["CurrentGame%0"] ~= "Flick") and (TABLE_TableIndirection["CurrentGame%0"] ~= "OneShot") and (TABLE_TableIndirection["CurrentGame%0"] ~= "UnnamedShooter")) then
+	TABLE_TableIndirection["CombatTab%0"]:Checkbox({Label="Team Check",Value=TABLE_TableIndirection["Settings%0"]['Aimbot']['TeamCheck'],Callback=function(self, Value)
+		TABLE_TableIndirection["Settings%0"]['Aimbot']['TeamCheck'] = Value;
+	end});
+end
+TABLE_TableIndirection["VisualsTab%0"]:Checkbox({Label="Master Switch",Value=TABLE_TableIndirection["Settings%0"]['ESP']['Enabled'],Callback=function(self, Value)
+	TABLE_TableIndirection["Settings%0"]['ESP']['Enabled'] = Value;
+end});
+TABLE_TableIndirection["VisualsTab%0"]:Separator();
+TABLE_TableIndirection["VisualsTab%0"]:Checkbox({Label="Boxes",Value=TABLE_TableIndirection["Settings%0"]['ESP']['Boxes'],Callback=function(self, Value)
+	TABLE_TableIndirection["Settings%0"]['ESP']['Boxes'] = Value;
+end});
+TABLE_TableIndirection["VisualsTab%0"]:Checkbox({Label="Names",Value=TABLE_TableIndirection["Settings%0"]['ESP']['Names'],Callback=function(self, Value)
+	TABLE_TableIndirection["Settings%0"]['ESP']['Names'] = Value;
+end});
+if (TABLE_TableIndirection["CurrentGame%0"] ~= "Arsenal") then
+	TABLE_TableIndirection["VisualsTab%0"]:Checkbox({Label="Health",Value=TABLE_TableIndirection["Settings%0"]['ESP']['Health'],Callback=function(self, Value)
+		TABLE_TableIndirection["Settings%0"]['ESP']['Health'] = Value;
+	end});
+else
+	TABLE_TableIndirection["Settings%0"]['ESP']['Health'] = false;
+end
+TABLE_TableIndirection["VisualsTab%0"]:Checkbox({Label="Skeleton",Value=TABLE_TableIndirection["Settings%0"]['ESP']['Skeleton'],Callback=function(self, Value)
+	TABLE_TableIndirection["Settings%0"]['ESP']['Skeleton'] = Value;
+end});
+if ((TABLE_TableIndirection["CurrentGame%0"] ~= "Flick") and (TABLE_TableIndirection["CurrentGame%0"] ~= "OneShot") and (TABLE_TableIndirection["CurrentGame%0"] ~= "UnnamedShooter")) then
+	TABLE_TableIndirection["VisualsTab%0"]:Checkbox({Label="Team Check",Value=TABLE_TableIndirection["Settings%0"]['ESP']['TeamCheck'],Callback=function(self, Value)
+		TABLE_TableIndirection["Settings%0"]['ESP']['TeamCheck'] = Value;
+	end});
+end
+TABLE_TableIndirection["VisualsTab%0"]:Slider({Label="Max Distance",Value=TABLE_TableIndirection["Settings%0"]['ESP']['MaxDistance'],MinValue=(450 - (87 + 263)),MaxValue=(5180 - (67 + 113)),Callback=function(self, Value)
+	TABLE_TableIndirection["Settings%0"]['ESP']['MaxDistance'] = Value;
+end});
+TABLE_TableIndirection["Window%0"]:CreateTab({Name="Settings"}):Keybind({Label="Toggle UI",Value=Enum['KeyCode']['Insert'],Callback=function(self, KeyCode)
+	TABLE_TableIndirection["Window%0"]:SetVisible(not TABLE_TableIndirection["Window%0"]['Visible']);
+end});
+TABLE_TableIndirection["CreditTab%0"] = TABLE_TableIndirection["Window%0"]:CreateTab({Name="Credit"});
+TABLE_TableIndirection["CreditTab%0"]:Label({Text="Thanks to BinaryZero for the collaboration and assistance."});
+TABLE_TableIndirection["CreditTab%0"]:Separator();
+TABLE_TableIndirection["CreditTab%0"]:Label({Text="Developed by Masked0s"});
+TABLE_TableIndirection["CreditTab%1"] = TABLE_TableIndirection["Window%0"]:CreateTab({Name="Build Notes"});
+TABLE_TableIndirection["CreditTab%1"]:Label({Text="BUILD-0.0.5"});
+local function GetCharacter(Player)
+	return Player['Character'] or TABLE_TableIndirection["Services%0"]['Workspace']:FindFirstChild(Player.Name);
+end
+local function IsTeammate(Player)
+	if ((TABLE_TableIndirection["CurrentGame%0"] == "Flick") or (TABLE_TableIndirection["CurrentGame%0"] == "OneShot") or (TABLE_TableIndirection["CurrentGame%0"] == "UnnamedShooter")) then
+		return false;
+	end
+	if (not TABLE_TableIndirection["Settings%0"]['Aimbot']['TeamCheck'] and not TABLE_TableIndirection["Settings%0"]['ESP']['TeamCheck']) then
+		return false;
+	end
+	if (Player['Team'] and TABLE_TableIndirection["LocalPlayer%0"]['Team']) then
+		return Player['Team'] == TABLE_TableIndirection["LocalPlayer%0"]['Team'];
+	elseif (Player['TeamColor'] and TABLE_TableIndirection["LocalPlayer%0"]['TeamColor']) then
+		return Player['TeamColor'] == TABLE_TableIndirection["LocalPlayer%0"]['TeamColor'];
+	end
+	return false;
+end
+local function IsVisible(TargetPart)
+	if not TABLE_TableIndirection["Settings%0"]['Aimbot']['WallCheck'] then
+		return true;
+	end
+	TABLE_TableIndirection["Origin%0"] = TABLE_TableIndirection["Services%0"]['Camera']['CFrame']['Position'];
+	TABLE_TableIndirection["Direction%0"] = (TargetPart['Position'] - TABLE_TableIndirection["Origin%0"])['Unit'] * (TargetPart['Position'] - TABLE_TableIndirection["Origin%0"])['Magnitude'];
+	TABLE_TableIndirection["RaycastParams%0"] = RaycastParams.new();
+	TABLE_TableIndirection["LocalChar%0"] = GetCharacter(TABLE_TableIndirection["LocalPlayer%0"]);
+	TABLE_TableIndirection["RaycastParams%0"]['FilterDescendantsInstances'] = {TABLE_TableIndirection["LocalChar%0"],TABLE_TableIndirection["Services%0"]['Camera']};
+	TABLE_TableIndirection["RaycastParams%0"]['FilterType'] = Enum['RaycastFilterType']['Exclude'];
+	TABLE_TableIndirection["Result%0"] = TABLE_TableIndirection["Services%0"]['Workspace']:Raycast(TABLE_TableIndirection["Origin%0"], TABLE_TableIndirection["Direction%0"], TABLE_TableIndirection["RaycastParams%0"]);
+	return (TABLE_TableIndirection["Result%0"] == nil) or TABLE_TableIndirection["Result%0"]['Instance']:IsDescendantOf(TargetPart.Parent);
+end
+local function GetClosestPlayer()
+	TABLE_TableIndirection["ClosestPlayer%0"] = nil;
+	TABLE_TableIndirection["ShowFOV%0"] = TABLE_TableIndirection["Settings%0"]['Aimbot']['ShowFOV'];
+	TABLE_TableIndirection["ShortestDistance%0"] = (TABLE_TableIndirection["ShowFOV%0"] and TABLE_TableIndirection["Settings%0"]['Aimbot']['FOV']) or math['huge'];
+	for _, Player in pairs(TABLE_TableIndirection["Services%0"]['Players']:GetPlayers()) do
+		TABLE_TableIndirection["Character%0"] = GetCharacter(Player);
+		if ((Player ~= TABLE_TableIndirection["LocalPlayer%0"]) and TABLE_TableIndirection["Character%0"] and TABLE_TableIndirection["Character%0"]:FindFirstChild(TABLE_TableIndirection["Settings%0"]['Aimbot'].TargetPart) and TABLE_TableIndirection["Character%0"]:FindFirstChildWhichIsA("Humanoid") and (TABLE_TableIndirection["Character%0"]:FindFirstChildWhichIsA("Humanoid")['Health'] > (0 - 0))) then
+			if (TABLE_TableIndirection["Settings%0"]['Aimbot']['TeamCheck'] and IsTeammate(Player)) then
+				continue;
+			end
+			TABLE_TableIndirection["TargetPart%0"] = TABLE_TableIndirection["Character%0"][TABLE_TableIndirection["Settings%0"]['Aimbot']['TargetPart']];
+			local ScreenPos, OnScreen = TABLE_TableIndirection["Services%0"]['Camera']:WorldToViewportPoint(TABLE_TableIndirection["TargetPart%0"].Position);
+			if OnScreen then
+				TABLE_TableIndirection["MousePos%0"] = Vector2.new(TABLE_TableIndirection["Services%0"]['UserInputService']:GetMouseLocation().X, TABLE_TableIndirection["Services%0"]['UserInputService']:GetMouseLocation().Y);
+				TABLE_TableIndirection["Distance%0"] = (Vector2.new(ScreenPos.X, ScreenPos.Y) - TABLE_TableIndirection["MousePos%0"])['Magnitude'];
+				if (TABLE_TableIndirection["Distance%0"] >= TABLE_TableIndirection["ShortestDistance%0"]) then
+				elseif IsVisible(TABLE_TableIndirection["TargetPart%0"]) then
+					TABLE_TableIndirection["ClosestPlayer%0"] = Player;
+					TABLE_TableIndirection["ShortestDistance%0"] = TABLE_TableIndirection["Distance%0"];
+				end
+			end
+		end
+	end
+	return TABLE_TableIndirection["ClosestPlayer%0"];
+end
+local function GetHealth(Character, Humanoid)
+	if Humanoid then
+		return Humanoid['Health'], Humanoid['MaxHealth'];
+	end
+	if Character:GetAttribute("Health") then
+		TABLE_TableIndirection["Health%0"] = Character:GetAttribute("Health");
+		TABLE_TableIndirection["MaxHealth%0"] = Character:GetAttribute("MaxHealth") or (74 + 26);
+		return TABLE_TableIndirection["Health%0"], TABLE_TableIndirection["MaxHealth%0"];
+	end
+	return 397 - 297, 100;
+end
+local function CreateDrawing(Type, Properties)
+	TABLE_TableIndirection["Obj%0"] = Drawing.new(Type);
+	for K, V in pairs(Properties) do
+		TABLE_TableIndirection["Obj%0"][K] = V;
+	end
+	return TABLE_TableIndirection["Obj%0"];
+end
+local function AddESP(Player)
+	if TABLE_TableIndirection["Visuals%0"][Player] then
+		return;
+	end
+	TABLE_TableIndirection["Visuals%0"][Player] = {BoxOutline=CreateDrawing("Square", {Thickness=(955 - (802 + 150)),Color=Color3.new(0, 0 - 0, 0 - 0),Filled=false,Visible=false,ZIndex=1}),Box=CreateDrawing("Square", {Thickness=1,Color=TABLE_TableIndirection["Settings%0"]['ESP']['BoxColor'],Filled=false,Visible=false,ZIndex=(2 + 0)}),HealthOutline=CreateDrawing("Square", {Thickness=1,Color=Color3.new(0, 997 - (915 + 82), 0),Filled=true,Visible=false,ZIndex=(2 - 1)}),Health=CreateDrawing("Square", {Thickness=1,Color=Color3.fromRGB(0 + 0, 335 - 80, 0),Filled=true,Visible=false,ZIndex=(1189 - (1069 + 118))}),Name=CreateDrawing("Text", {Size=13,Center=true,Outline=true,Font=2,Color=TABLE_TableIndirection["Settings%0"]['ESP']['TextColor'],Visible=false,ZIndex=3}),HeadDot=CreateDrawing("Circle", {Thickness=1,Color=Color3.fromRGB(578 - 323, 0 - 0, 0 + 0),Filled=false,Visible=false,ZIndex=(3 - 1)})};
+	TABLE_TableIndirection["Character%0"] = Player['Character'];
+	if TABLE_TableIndirection["Character%0"] then
+		for i = 1, 15 + 0 do
+			TABLE_TableIndirection["Visuals%0"][Player]["Skeleton_" .. i] = CreateDrawing("Line", {Thickness=1,Color=TABLE_TableIndirection["Settings%0"]['ESP']['SkeletonColor'],Visible=false,ZIndex=(792 - (368 + 423))});
+		end
+	end
+end
+local function RemoveESP(Player)
+	if TABLE_TableIndirection["Visuals%0"][Player] then
+		for Key, Obj in pairs(TABLE_TableIndirection["Visuals%0"][Player]) do
+			Obj:Remove();
+		end
+		TABLE_TableIndirection["Visuals%0"][Player] = nil;
+	end
+end
+local function UpdateESP()
+	for Player, Objects in pairs(TABLE_TableIndirection["Visuals%0"]) do
+		TABLE_TableIndirection["Character%0"] = GetCharacter(Player);
+		TABLE_TableIndirection["Humanoid%0"] = TABLE_TableIndirection["Character%0"] and TABLE_TableIndirection["Character%0"]:FindFirstChildWhichIsA("Humanoid");
+		if (TABLE_TableIndirection["Character%0"] and TABLE_TableIndirection["Character%0"]:FindFirstChild("HumanoidRootPart") and TABLE_TableIndirection["Humanoid%0"] and TABLE_TableIndirection["Settings%0"]['ESP']['Enabled']) then
+			local Health, MaxHealth = GetHealth(TABLE_TableIndirection["Character%0"], TABLE_TableIndirection["Humanoid%0"]);
+			if (Health > 0) then
+				TABLE_TableIndirection["HRP%0"] = TABLE_TableIndirection["Character%0"]['HumanoidRootPart'];
+				TABLE_TableIndirection["Head%0"] = TABLE_TableIndirection["Character%0"]:FindFirstChild("Head");
+				TABLE_TableIndirection["LeftFoot%0"] = TABLE_TableIndirection["Character%0"]:FindFirstChild("LeftFoot") or TABLE_TableIndirection["Character%0"]:FindFirstChild("Left Leg");
+				TABLE_TableIndirection["RightFoot%0"] = TABLE_TableIndirection["Character%0"]:FindFirstChild("RightFoot") or TABLE_TableIndirection["Character%0"]:FindFirstChild("Right Leg");
+				TABLE_TableIndirection["IsTeam%0"] = IsTeammate(Player);
+				if (TABLE_TableIndirection["Settings%0"]['ESP']['TeamCheck'] and TABLE_TableIndirection["IsTeam%0"]) then
+					for _, v in pairs(Objects) do
+						if (typeof(v) == "Instance") then
+							v['Enabled'] = false;
+						else
+							v['Visible'] = false;
+						end
+					end
+					continue;
+				end
+				TABLE_TableIndirection["DistToPlayer%0"] = (TABLE_TableIndirection["Services%0"]['Camera']['CFrame']['Position'] - TABLE_TableIndirection["HRP%0"]['Position'])['Magnitude'];
+				if (TABLE_TableIndirection["DistToPlayer%0"] <= TABLE_TableIndirection["Settings%0"]['ESP']['MaxDistance']) then
+				else
+					for _, v in pairs(Objects) do
+						if (typeof(v) == "Instance") then
+							v['Enabled'] = false;
+						else
+							v['Visible'] = false;
+						end
+					end
+					continue;
+				end
+				if (TABLE_TableIndirection["CurrentGame%0"] == "EasternWar") then
+					if (TABLE_TableIndirection["DistToPlayer%0"] > 95) then
+						for _, v in pairs(Objects) do
+							if (typeof(v) == "Instance") then
+								v['Enabled'] = false;
+							else
+								v['Visible'] = false;
+							end
+						end
+						continue;
+					end
+				end
+				local HRPPos, OnScreen = TABLE_TableIndirection["Services%0"]['Camera']:WorldToViewportPoint(TABLE_TableIndirection["HRP%0"].Position);
+				local BoxPos, BoxSize = Vector2.new(0, 0 - 0), Vector2.new(18 - (10 + 8), 0 - 0);
+				TABLE_TableIndirection["HasBox%0"] = false;
+				if (TABLE_TableIndirection["Head%0"] and (TABLE_TableIndirection["LeftFoot%0"] or TABLE_TableIndirection["RightFoot%0"]) and (TABLE_TableIndirection["CurrentGame%0"] ~= "Strucid")) then
+					TABLE_TableIndirection["HeadPos%0"] = TABLE_TableIndirection["Services%0"]['Camera']:WorldToViewportPoint(TABLE_TableIndirection["Head%0"]['Position'] + Vector3.new(0, 442.5 - (416 + 26), 0 - 0));
+					TABLE_TableIndirection["FootPos%0"] = TABLE_TableIndirection["Services%0"]['Camera']:WorldToViewportPoint((TABLE_TableIndirection["LeftFoot%0"] or TABLE_TableIndirection["RightFoot%0"])['Position'] - Vector3.new(0, 0.5 + 0, 0));
+					TABLE_TableIndirection["Height%0"] = math.abs(TABLE_TableIndirection["HeadPos%0"]['Y'] - TABLE_TableIndirection["FootPos%0"]['Y']);
+					TABLE_TableIndirection["Width%0"] = TABLE_TableIndirection["Height%0"] * 0.65;
+					BoxPos = Vector2.new(HRPPos['X'] - (TABLE_TableIndirection["Width%0"] / (3 - 1)), TABLE_TableIndirection["HeadPos%0"].Y);
+					BoxSize = Vector2.new(TABLE_TableIndirection["Width%0"], TABLE_TableIndirection["Height%0"]);
+					TABLE_TableIndirection["HasBox%0"] = true;
+				else
+					TABLE_TableIndirection["TopPos%0"] = TABLE_TableIndirection["HRP%0"]['Position'] + Vector3.new(0, 3, 438 - (145 + 293));
+					TABLE_TableIndirection["BotPos%0"] = TABLE_TableIndirection["HRP%0"]['Position'] - Vector3.new(430 - (44 + 386), 3, 1486 - (998 + 488));
+					local TopV, TopOn = TABLE_TableIndirection["Services%0"]['Camera']:WorldToViewportPoint(TABLE_TableIndirection["TopPos%0"]);
+					local BotV, BotOn = TABLE_TableIndirection["Services%0"]['Camera']:WorldToViewportPoint(TABLE_TableIndirection["BotPos%0"]);
+					if (TopOn and BotOn) then
+						TABLE_TableIndirection["Height%0"] = math.abs(TopV['Y'] - BotV['Y']);
+						TABLE_TableIndirection["Width%0"] = TABLE_TableIndirection["Height%0"] * (0.65 + 0);
+						BoxPos = Vector2.new(TopV['X'] - (TABLE_TableIndirection["Width%0"] / (2 + 0)), TopV.Y);
+						BoxSize = Vector2.new(TABLE_TableIndirection["Width%0"], TABLE_TableIndirection["Height%0"]);
+						TABLE_TableIndirection["HasBox%0"] = true;
+					end
+				end
+				if (OnScreen and TABLE_TableIndirection["HasBox%0"]) then
+					if TABLE_TableIndirection["Settings%0"]['ESP']['Boxes'] then
+						Objects['BoxOutline']['Size'] = BoxSize;
+						Objects['BoxOutline']['Position'] = BoxPos;
+						Objects['BoxOutline']['Visible'] = true;
+						Objects['Box']['Size'] = BoxSize;
+						Objects['Box']['Position'] = BoxPos;
+						Objects['Box']['Visible'] = true;
+						Objects['Box']['Color'] = TABLE_TableIndirection["Settings%0"]['ESP']['BoxColor'];
+					else
+						Objects['BoxOutline']['Visible'] = false;
+						Objects['Box']['Visible'] = false;
+					end
+					if TABLE_TableIndirection["Settings%0"]['ESP']['Health'] then
+						TABLE_TableIndirection["HealthPct%0"] = 0;
+						if (MaxHealth > (772 - (201 + 571))) then
+							TABLE_TableIndirection["HealthPct%0"] = math.clamp(Health / MaxHealth, 0, 1139 - (116 + 1022));
+						end
+						TABLE_TableIndirection["BarPos%0"] = Vector2.new(BoxPos['X'] - (20 - 15), BoxPos.Y);
+						TABLE_TableIndirection["BarSize%0"] = Vector2.new(2 + 0, BoxSize.Y);
+						Objects['HealthOutline']['Position'] = Vector2.new(TABLE_TableIndirection["BarPos%0"]['X'] - (3 - 2), TABLE_TableIndirection["BarPos%0"]['Y'] - (3 - 2));
+						Objects['HealthOutline']['Size'] = Vector2.new(TABLE_TableIndirection["BarSize%0"]['X'] + 2, TABLE_TableIndirection["BarSize%0"]['Y'] + 2);
+						Objects['HealthOutline']['Visible'] = true;
+						TABLE_TableIndirection["FillSizeY%0"] = TABLE_TableIndirection["BarSize%0"]['Y'] * TABLE_TableIndirection["HealthPct%0"];
+						Objects['Health']['Position'] = Vector2.new(TABLE_TableIndirection["BarPos%0"].X, TABLE_TableIndirection["BarPos%0"]['Y'] + (TABLE_TableIndirection["BarSize%0"]['Y'] - TABLE_TableIndirection["FillSizeY%0"]));
+						Objects['Health']['Size'] = Vector2.new(TABLE_TableIndirection["BarSize%0"].X, TABLE_TableIndirection["FillSizeY%0"]);
+						Objects['Health']['Color'] = Color3.fromHSV(TABLE_TableIndirection["HealthPct%0"] * 0.3, 1, 860 - (814 + 45));
+						Objects['Health']['Visible'] = true;
+					else
+						Objects['HealthOutline']['Visible'] = false;
+						Objects['Health']['Visible'] = false;
+					end
+					if TABLE_TableIndirection["Settings%0"]['ESP']['Names'] then
+						Objects['Name']['Text'] = Player['Name'];
+						Objects['Name']['Position'] = Vector2.new(HRPPos.X, BoxPos['Y'] - (39 - 23));
+						Objects['Name']['Visible'] = true;
+						Objects['Name']['Color'] = TABLE_TableIndirection["Settings%0"]['ESP']['TextColor'];
+					else
+						Objects['Name']['Visible'] = false;
+					end
+					if TABLE_TableIndirection["Settings%0"]['ESP']['Skeleton'] then
+						local HeadV, HeadOn = TABLE_TableIndirection["Services%0"]['Camera']:WorldToViewportPoint(TABLE_TableIndirection["Head%0"].Position);
+						if HeadOn then
+							Objects['HeadDot']['Position'] = Vector2.new(HeadV.X, HeadV.Y);
+							Objects['HeadDot']['Radius'] = (22 + 378) / HeadV['Z'];
+							Objects['HeadDot']['Visible'] = true;
+							Objects['HeadDot']['Color'] = TABLE_TableIndirection["Settings%0"]['ESP']['SkeletonColor'];
+							Objects['HeadDot']['Filled'] = false;
+						else
+							Objects['HeadDot']['Visible'] = false;
+						end
+					else
+						Objects['HeadDot']['Visible'] = false;
+					end
+					if TABLE_TableIndirection["Settings%0"]['ESP']['Skeleton'] then
+						local function Line(Bone1, Bone2, Index)
+							TABLE_TableIndirection["Obj%0"] = Objects["Skeleton_" .. Index];
+							TABLE_TableIndirection["P1%0"] = TABLE_TableIndirection["Character%0"]:FindFirstChild(Bone1);
+							TABLE_TableIndirection["P2%0"] = TABLE_TableIndirection["Character%0"]:FindFirstChild(Bone2);
+							if (TABLE_TableIndirection["P1%0"] and TABLE_TableIndirection["P2%0"]) then
+								local V1, On1 = TABLE_TableIndirection["Services%0"]['Camera']:WorldToViewportPoint(TABLE_TableIndirection["P1%0"].Position);
+								local V2, On2 = TABLE_TableIndirection["Services%0"]['Camera']:WorldToViewportPoint(TABLE_TableIndirection["P2%0"].Position);
+								if (On1 and On2) then
+									TABLE_TableIndirection["Obj%0"]['From'] = Vector2.new(V1.X, V1.Y);
+									TABLE_TableIndirection["Obj%0"]['To'] = Vector2.new(V2.X, V2.Y);
+									TABLE_TableIndirection["Obj%0"]['Visible'] = true;
+									TABLE_TableIndirection["Obj%0"]['Color'] = TABLE_TableIndirection["Settings%0"]['ESP']['SkeletonColor'];
+								else
+									TABLE_TableIndirection["Obj%0"]['Visible'] = false;
+								end
+							else
+								TABLE_TableIndirection["Obj%0"]['Visible'] = false;
+							end
+						end
+						Line("Head", "UpperTorso", 1);
+						Line("UpperTorso", "LowerTorso", 2);
+						Line("UpperTorso", "LeftUpperArm", 2 + 1);
+						Line("LeftUpperArm", "LeftLowerArm", 889 - (261 + 624));
+						Line("LeftLowerArm", "LeftHand", 5);
+						Line("UpperTorso", "RightUpperArm", 6);
+						Line("RightUpperArm", "RightLowerArm", 7);
+						Line("RightLowerArm", "RightHand", 8);
+						Line("LowerTorso", "LeftUpperLeg", 15 - 6);
+						Line("LeftUpperLeg", "LeftLowerLeg", 10);
+						Line("LeftLowerLeg", "LeftFoot", 1091 - (1020 + 60));
+						Line("LowerTorso", "RightUpperLeg", 12);
+						Line("RightUpperLeg", "RightLowerLeg", 13);
+						Line("RightLowerLeg", "RightFoot", 1437 - (630 + 793));
+						if not TABLE_TableIndirection["Character%0"]:FindFirstChild("UpperTorso") then
+							Line("Head", "Torso", 1);
+							Line("Torso", "Left Arm", 3);
+							Line("Torso", "Right Arm", 6);
+							Line("Torso", "Left Leg", 30 - 21);
+							Line("Torso", "Right Leg", 56 - 44);
+						end
+					else
+						for i = 1 + 0, 51 - 36 do
+							if Objects["Skeleton_" .. i] then
+								Objects["Skeleton_" .. i]['Visible'] = false;
+							end
+						end
+					end
+				else
+					for _, v in pairs(Objects) do
+						if (typeof(v) == "Instance") then
+							v['Enabled'] = false;
+						else
+							v['Visible'] = false;
+						end
+					end
+				end
+			else
+				for _, v in pairs(Objects) do
+					if (typeof(v) == "Instance") then
+						v['Enabled'] = false;
+					else
+						v['Visible'] = false;
+					end
+				end
+			end
+		else
+			for _, v in pairs(Objects) do
+				if (typeof(v) == "Instance") then
+					v['Enabled'] = false;
+				else
+					v['Visible'] = false;
+				end
+			end
+		end
+	end
+end
+table.insert(TABLE_TableIndirection["Connections%0"], TABLE_TableIndirection["Services%0"]['RunService']['RenderStepped']:Connect(function()
+	TABLE_TableIndirection["FOVCircle%0"]['Position'] = (TABLE_TableIndirection["Settings%0"]['Aimbot']['ShowFOV'] and Vector2.new(TABLE_TableIndirection["Services%0"]['UserInputService']:GetMouseLocation().X, TABLE_TableIndirection["Services%0"]['UserInputService']:GetMouseLocation().Y)) or Vector2.new(0, 0);
+	TABLE_TableIndirection["FOVCircle%0"]['Radius'] = TABLE_TableIndirection["Settings%0"]['Aimbot']['FOV'];
+	TABLE_TableIndirection["FOVCircle%0"]['Visible'] = TABLE_TableIndirection["Settings%0"]['Aimbot']['ShowFOV'] and TABLE_TableIndirection["Settings%0"]['Aimbot']['Enabled'];
+	if TABLE_TableIndirection["Settings%0"]['Aimbot']['Enabled'] then
+		TABLE_TableIndirection["KeyPressed%0"] = false;
+		if ((TABLE_TableIndirection["Settings%0"]['Aimbot']['Keybind'] == Enum['UserInputType']['MouseButton1']) or (TABLE_TableIndirection["Settings%0"]['Aimbot']['Keybind'] == Enum['UserInputType']['MouseButton2'])) then
+			TABLE_TableIndirection["KeyPressed%0"] = TABLE_TableIndirection["Services%0"]['UserInputService']:IsMouseButtonPressed(TABLE_TableIndirection["Settings%0"]['Aimbot'].Keybind);
+		elseif (typeof(TABLE_TableIndirection["Settings%0"]['Aimbot'].Keybind) ~= "EnumItem") then
+		else
+			TABLE_TableIndirection["KeyPressed%0"] = TABLE_TableIndirection["Services%0"]['UserInputService']:IsKeyDown(TABLE_TableIndirection["Settings%0"]['Aimbot'].Keybind);
+		end
+		if TABLE_TableIndirection["KeyPressed%0"] then
+			TABLE_TableIndirection["Target%0"] = GetClosestPlayer();
+			if (TABLE_TableIndirection["Target%0"] and TABLE_TableIndirection["Target%0"]['Character']) then
+				TABLE_TableIndirection["TargetPart%0"] = TABLE_TableIndirection["Target%0"]['Character']:FindFirstChild(TABLE_TableIndirection["Settings%0"]['Aimbot'].TargetPart);
+				if TABLE_TableIndirection["TargetPart%0"] then
+					TABLE_TableIndirection["TargetPos%0"] = TABLE_TableIndirection["TargetPart%0"]['Position'];
+					local ScreenPos, OnScreen = TABLE_TableIndirection["Services%0"]['Camera']:WorldToViewportPoint(TABLE_TableIndirection["TargetPos%0"]);
+					if OnScreen then
+						TABLE_TableIndirection["MouseLocation%0"] = TABLE_TableIndirection["Services%0"]['UserInputService']:GetMouseLocation();
+						TABLE_TableIndirection["RelativeX%0"] = ScreenPos['X'] - TABLE_TableIndirection["MouseLocation%0"]['X'];
+						TABLE_TableIndirection["RelativeY%0"] = ScreenPos['Y'] - TABLE_TableIndirection["MouseLocation%0"]['Y'];
+						TABLE_TableIndirection["Sensitivity%0"] = TABLE_TableIndirection["Settings%0"]['Aimbot']['Smoothing'];
+						mousemoverel(TABLE_TableIndirection["RelativeX%0"] / TABLE_TableIndirection["Sensitivity%0"], TABLE_TableIndirection["RelativeY%0"] / TABLE_TableIndirection["Sensitivity%0"]);
+					end
+				end
+			end
+			if (TABLE_TableIndirection["CurrentGame%0"] ~= "Strucid") then
+			else
+				TABLE_TableIndirection["TargetObj%0"] = TABLE_TableIndirection["Mouse%0"]['Target'];
+				if (TABLE_TableIndirection["TargetObj%0"] and TABLE_TableIndirection["TargetObj%0"]['Parent']) then
+					TABLE_TableIndirection["TargetChar%0"] = TABLE_TableIndirection["TargetObj%0"]['Parent'];
+					TABLE_TableIndirection["Player%0"] = TABLE_TableIndirection["Services%0"]['Players']:GetPlayerFromCharacter(TABLE_TableIndirection["TargetChar%0"]);
+					local function IsEnemy(Plr)
+						if not Plr then
+							return false;
+						end
+						if (Plr ~= TABLE_TableIndirection["LocalPlayer%0"]) then
+						else
+							return false;
+						end
+						if IsTeammate(Plr) then
+							return false;
+						end
+						return true;
+					end
+					if IsEnemy(TABLE_TableIndirection["Player%0"]) then
+						mouse1click();
+					end
+				end
+			end
+		end
+	end
+	UpdateESP();
+end));
+local function SetupPlayer(Player)
+	if (Player ~= TABLE_TableIndirection["LocalPlayer%0"]) then
+		if GetCharacter(Player) then
+			AddESP(Player);
+		end
+		table.insert(TABLE_TableIndirection["Connections%0"], Player['CharacterAdded']:Connect(function(Char)
+			TABLE_TableIndirection["HRP%0"] = Char:WaitForChild("HumanoidRootPart", 5);
+			if TABLE_TableIndirection["HRP%0"] then
+				AddESP(Player);
+			end
+		end));
+	end
+end
+for _, Player in pairs(TABLE_TableIndirection["Services%0"]['Players']:GetPlayers()) do
+	SetupPlayer(Player);
+end
+table.insert(TABLE_TableIndirection["Connections%0"], TABLE_TableIndirection["Services%0"]['Players']['PlayerAdded']:Connect(function(Player)
+	SetupPlayer(Player);
+end));
+table.insert(TABLE_TableIndirection["Connections%0"], TABLE_TableIndirection["Services%0"]['Players']['PlayerRemoving']:Connect(function(Player)
+	RemoveESP(Player);
+end));
+getgenv().UniversalScript_Cleanup = function()
+	for _, Connection in pairs(TABLE_TableIndirection["Connections%0"]) do
+		Connection:Disconnect();
+	end
+	table.clear(TABLE_TableIndirection["Connections%0"]);
+	if TABLE_TableIndirection["FOVCircle%0"] then
+		TABLE_TableIndirection["FOVCircle%0"]:Remove();
+	end
+	for _, Player in pairs(TABLE_TableIndirection["Services%0"]['Players']:GetPlayers()) do
+		RemoveESP(Player);
+	end
+	if TABLE_TableIndirection["Window%0"] then
+		TABLE_TableIndirection["Window%0"]:SetVisible(false);
+	end
+end;
